@@ -1,0 +1,13 @@
+import VoiceAssistant from './components/VoiceAssistant'
+// ...existing imports
+
+// ...existing code
+
+// Place this inside your main App component's return, at the root level:
+<VoiceAssistant
+  onOpenCalendar={() => setActiveNav('calendar')}
+  onRunTriage={runTriage}
+  onAskAssistant={handleAssistantAsk}
+  selectedEmail={selectedEmail}
+/>
+// ...existing code

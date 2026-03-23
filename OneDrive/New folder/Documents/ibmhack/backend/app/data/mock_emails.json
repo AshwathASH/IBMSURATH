@@ -1,0 +1,29 @@
+[
+  {
+    "id": "mail-1001",
+    "from_email": "ceo@northstar-partners.com",
+    "subject": "Need board deck updates before 6 PM",
+    "body": "Team, we need the Q3 board deck updated with the revised churn metrics before 6 PM today. Please confirm owner and ETA.",
+    "thread": [
+      "Earlier today: Please include customer retention slide.",
+      "Yesterday: Finance asked for corrected ARR values."
+    ]
+  },
+  {
+    "id": "mail-1002",
+    "from_email": "operations@clientco.com",
+    "subject": "Schedule kickoff next Tuesday",
+    "body": "Can we schedule a 45 minute kickoff next Tuesday at 11:00 AM IST with your implementation lead and product manager?",
+    "thread": [
+      "We would like to discuss milestones and ownership.",
+      "Please share the calendar invite once confirmed."
+    ]
+  },
+  {
+    "id": "mail-1003",
+    "from_email": "newsletter@techdigest.ai",
+    "subject": "Weekly AI news roundup",
+    "body": "Here are this week's updates in AI regulation, model benchmarks, and funding rounds.",
+    "thread": []
+  }
+]

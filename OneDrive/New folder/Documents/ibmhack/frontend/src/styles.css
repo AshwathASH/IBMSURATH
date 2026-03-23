@@ -1,0 +1,1987 @@
+/* ═══════════════════════════════════════════════════════════════
+   OUTLOOK-STYLE DESIGN SYSTEM – Fluent Design Language
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Outlook / Fluent Primary Colors */
+  --outlook-blue: #0078d4;
+  --outlook-blue-hover: #106ebe;
+  --outlook-blue-pressed: #005a9e;
+  --outlook-blue-light: #deecf9;
+  --outlook-blue-lighter: #eff6fc;
+
+  /* Surface & Background */
+  --surface-primary: #ffffff;
+  --surface-secondary: #faf9f8;
+  --surface-tertiary: #f3f2f1;
+  --bg-app: #f5f5f5;
+
+  /* Text */
+  --text-primary: #323130;
+  --text-secondary: #605e5c;
+  --text-tertiary: #a19f9d;
+  --text-on-blue: #ffffff;
+
+  /* Borders */
+  --border-default: #edebe9;
+  --border-subtle: #f3f2f1;
+  --border-strong: #c8c6c4;
+
+  /* Status Colors */
+  --danger: #d13438;
+  --danger-bg: #fde7e9;
+  --warning: #ffaa44;
+  --warning-bg: #fff4ce;
+  --success: #107c10;
+  --success-bg: #dff6dd;
+  --info-bg: #cfe4fa;
+
+  /* Shadows (Fluent Design) */
+  --shadow-4: 0 1.6px 3.6px rgba(0,0,0,0.13), 0 0.3px 0.9px rgba(0,0,0,0.11);
+  --shadow-8: 0 3.2px 7.2px rgba(0,0,0,0.13), 0 0.6px 1.8px rgba(0,0,0,0.11);
+  --shadow-16: 0 6.4px 14.4px rgba(0,0,0,0.13), 0 1.2px 3.6px rgba(0,0,0,0.11);
+  --shadow-64: 0 25.6px 57.6px rgba(0,0,0,0.22), 0 4.8px 14.4px rgba(0,0,0,0.18);
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Nav Rail */
+  --rail-width: 48px;
+  --folder-pane-width: 220px;
+
+  /* Font */
+  --font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-app);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar (Outlook-style thin) ────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8c6c4;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a19f9d;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP SHELL – 3-column Outlook layout
+   ═══════════════════════════════════════════════════════════════ */
+.outlook-app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-app);
+}
+
+/* ── Navigation Rail (leftmost 48px) ──────────────────────── */
+.nav-rail {
+  width: var(--rail-width);
+  background: #1b1a19;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.nav-rail-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.nav-rail-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding-bottom: 8px;
+}
+
+.rail-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: #d2d0ce;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease, color 0.12s ease;
+  position: relative;
+  font-size: 0;
+}
+
+.rail-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.rail-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.rail-btn.active {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
+
+.rail-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: var(--outlook-blue);
+  border-radius: 0 2px 2px 0;
+}
+
+.rail-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--outlook-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+/* ── Folder Pane ──────────────────────────────────────────── */
+.folder-pane {
+  width: var(--folder-pane-width);
+  background: var(--surface-secondary);
+  border-right: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.folder-pane-header {
+  padding: 12px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.folder-pane-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.folder-section {
+  padding: 4px 0;
+}
+
+.folder-section-title {
+  padding: 4px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  text-align: left;
+}
+
+.folder-item:hover {
+  background: var(--surface-tertiary);
+}
+
+.folder-item.active {
+  background: var(--outlook-blue-light);
+  color: var(--outlook-blue);
+  font-weight: 600;
+}
+
+.folder-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.folder-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-item-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  min-width: 16px;
+  text-align: right;
+}
+
+.folder-item.active .folder-item-count {
+  color: var(--outlook-blue);
+}
+
+/* ── Main Content Area ────────────────────────────────────── */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ── Command Bar / Ribbon ─────────────────────────────────── */
+.command-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+.cmd-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: none;
+  background: var(--outlook-blue);
+  color: var(--text-on-blue);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  white-space: nowrap;
+}
+
+.cmd-btn-primary:hover {
+  background: var(--outlook-blue-hover);
+}
+
+.cmd-btn-primary:active {
+  background: var(--outlook-blue-pressed);
+}
+
+.cmd-btn-primary svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.cmd-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-default);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.cmd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.1s ease, border-color 0.1s ease;
+  white-space: nowrap;
+}
+
+.cmd-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.cmd-btn:hover {
+  background: var(--surface-tertiary);
+  border-color: var(--border-default);
+}
+
+.cmd-btn:active {
+  background: var(--border-default);
+}
+
+.cmd-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cmd-spacer {
+  flex: 1;
+}
+
+.account-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--outlook-blue-lighter);
+  color: var(--outlook-blue);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--outlook-blue-light);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-chip svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--outlook-blue);
+  flex-shrink: 0;
+}
+
+/* ── Error/Success Banners ────────────────────────────────── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px 0;
+  padding: 8px 12px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #f1bbbc;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.error-banner svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--danger);
+  flex-shrink: 0;
+}
+
+.approval-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #9fd89f;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* ── Workspace Grid (Email List + Reading Pane) ───────────── */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Email List / Inbox Panel ─────────────────────────────── */
+.inbox-panel {
+  background: var(--surface-primary);
+  border-right: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.inbox-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-default);
+  padding: 0 12px;
+  background: var(--surface-primary);
+}
+
+.inbox-tab {
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.12s ease;
+}
+
+.inbox-tab:hover {
+  color: var(--text-primary);
+}
+
+.inbox-tab.active {
+  color: var(--outlook-blue);
+}
+
+.inbox-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--outlook-blue);
+  border-radius: 2px 2px 0 0;
+}
+
+.inbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.inbox-sort {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-family);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.inbox-sort:hover {
+  color: var(--outlook-blue);
+}
+
+.email-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty-inbox {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.empty-inbox svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--text-tertiary);
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* ── Email Row ────────────────────────────────────────────── */
+.email-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-primary);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  position: relative;
+  font-family: var(--font-family);
+}
+
+.email-row:hover {
+  background: var(--surface-tertiary);
+}
+
+.email-row.active {
+  background: var(--outlook-blue-lighter);
+}
+
+.email-row.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--outlook-blue);
+}
+
+.email-row.unread {
+  background: var(--surface-primary);
+}
+
+.unread-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--outlook-blue);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.unread-dot.read {
+  background: transparent;
+}
+
+.email-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.email-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.email-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 1px;
+}
+
+.email-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.email-from {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.email-row.unread .email-from {
+  font-weight: 700;
+}
+
+.email-date {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.priority-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.priority-chip.high {
+  color: #8a0f13;
+  background: #fde7e9;
+  border: 1px solid #f4c8ca;
+}
+
+.priority-chip.medium {
+  color: #7f4f00;
+  background: #fff4ce;
+  border: 1px solid #ffe08a;
+}
+
+.priority-chip.low {
+  color: #0f6a0f;
+  background: #dff6dd;
+  border: 1px solid #b8e3b4;
+}
+
+.priority-chip.unknown {
+  color: var(--text-secondary);
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border-default);
+}
+
+.email-row.priority-high {
+  border-left: 3px solid var(--danger);
+}
+
+.email-row.priority-medium {
+  border-left: 3px solid var(--warning);
+}
+
+.email-row.priority-low {
+  border-left: 3px solid var(--success);
+}
+
+.email-row.priority-unknown {
+  border-left: 3px solid var(--border-strong);
+}
+
+.email-subject {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 0 2px;
+}
+
+.email-row.unread .email-subject {
+  font-weight: 600;
+}
+
+.email-preview {
+  font-size: 12px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Reading Pane ─────────────────────────────────────────── */
+.reading-pane {
+  background: var(--surface-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reading-pane-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-tertiary);
+  gap: 12px;
+}
+
+.reading-pane-empty svg {
+  width: 64px;
+  height: 64px;
+  fill: var(--text-tertiary);
+  opacity: 0.4;
+}
+
+.reading-pane-empty p {
+  font-size: 14px;
+}
+
+/* Reading Pane Header */
+.rp-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.rp-subject {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.rp-sender-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rp-sender-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.rp-sender-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rp-sender-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.rp-sender-email {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.rp-date {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.rp-to-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding-left: 52px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Reading Pane Action Bar */
+.rp-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.rp-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.rp-action-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.rp-action-btn:hover {
+  background: var(--surface-tertiary);
+}
+
+.rp-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rp-action-btn.primary {
+  color: var(--outlook-blue);
+  font-weight: 600;
+}
+
+.rp-action-btn.primary:hover {
+  background: var(--outlook-blue-lighter);
+}
+
+.quick-reply-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-secondary);
+}
+
+.quick-reply-title {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.quick-reply-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.quick-reply-btn:hover {
+  border-color: var(--outlook-blue);
+  color: var(--outlook-blue);
+  background: var(--outlook-blue-lighter);
+}
+
+.assist-panel {
+  margin: 12px 20px 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-secondary);
+  padding: 12px;
+}
+
+.assist-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.assist-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.assist-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.assist-action-btn {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.assist-action-btn:hover {
+  border-color: var(--outlook-blue);
+  color: var(--outlook-blue);
+  background: var(--outlook-blue-lighter);
+}
+
+.assist-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.assist-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.assist-input {
+  flex: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: var(--font-family);
+  outline: none;
+  background: var(--surface-primary);
+}
+
+.assist-input:focus {
+  border-color: var(--outlook-blue);
+}
+
+.assist-send-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: var(--outlook-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.assist-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.assist-note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.assist-answer {
+  margin-top: 10px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 10px;
+}
+
+.assist-answer-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.assist-answer pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  line-height: 1.5;
+}
+
+/* Reading Pane Body */
+.rp-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.rp-email-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.rp-email-body a,
+.inline-link {
+  color: var(--outlook-blue);
+  text-decoration: underline;
+}
+
+/* ── AI Triage Section (inside reading pane) ──────────────── */
+.triage-section {
+  margin-top: 24px;
+  border-top: 1px solid var(--border-default);
+  padding-top: 20px;
+}
+
+.triage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.triage-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.triage-title svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--outlook-blue);
+}
+
+.triage-badge {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.triage-run-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.triage-run-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.triage-run-btn:hover {
+  background: var(--surface-tertiary);
+  border-color: var(--outlook-blue);
+  color: var(--outlook-blue);
+}
+
+.triage-run-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Priority Badge */
+.priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.priority.urgent {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.priority.requires-action {
+  background: var(--warning-bg);
+  color: #8b6914;
+}
+
+.priority.fyi {
+  background: var(--info-bg);
+  color: #0050a0;
+}
+
+/* Summary Box */
+.summary-box {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-secondary);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.summary-box h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.summary-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.summary-box li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.triage-meta {
+  margin-bottom: 12px;
+}
+
+.triage-meta p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Action Cards */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.action-card {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  padding: 14px 16px;
+  transition: box-shadow 0.15s ease;
+}
+
+.action-card:hover {
+  box-shadow: var(--shadow-4);
+}
+
+.action-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.action-card ul {
+  margin: 4px 0 8px;
+  padding-left: 18px;
+}
+
+.action-card li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+
+.action-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  background: var(--outlook-blue);
+  color: var(--text-on-blue);
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  margin-top: 8px;
+}
+
+.action-card button:hover {
+  background: var(--outlook-blue-hover);
+}
+
+.action-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Calendar Modal ───────────────────────────────────────── */
+.calendar-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.calendar-modal {
+  width: min(860px, 94vw);
+  max-height: 85vh;
+  overflow: hidden;
+  background: var(--surface-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-64);
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.calendar-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.calendar-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-modal-header h2 svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--outlook-blue);
+}
+
+.calendar-modal-header button {
+  padding: 6px 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-primary);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.1s ease;
+}
+
+.calendar-modal-header button:hover {
+  background: var(--surface-tertiary);
+}
+
+/* Calendar Panel */
+.calendar-panel {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendar-event-list {
+  display: grid;
+  gap: 10px;
+}
+
+.calendar-event-card {
+  border: 1px solid var(--border-default);
+  border-left: 4px solid var(--outlook-blue);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  padding: 14px 16px;
+  transition: box-shadow 0.12s ease;
+}
+
+.calendar-event-card:hover {
+  box-shadow: var(--shadow-4);
+}
+
+.calendar-event-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+}
+
+.calendar-event-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 3px 0;
+}
+
+.calendar-event-card a {
+  color: var(--outlook-blue);
+  text-decoration: none;
+}
+
+.calendar-event-card a:hover {
+  text-decoration: underline;
+}
+
+.meeting-link-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.meeting-link-item {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  padding: 8px 12px;
+}
+
+.meeting-link-provider {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.meeting-link-url {
+  font-size: 12px;
+  color: var(--outlook-blue);
+  word-break: break-all;
+  text-decoration: underline;
+  margin: 0;
+}
+
+.meeting-link-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 4px 10px;
+  background: var(--outlook-blue);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.1s ease;
+}
+
+.meeting-link-open:hover {
+  background: var(--outlook-blue-hover);
+  text-decoration: none;
+}
+
+/* ── Empty State ──────────────────────────────────────────── */
+.empty-state {
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.badge {
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .workspace-grid {
+    grid-template-columns: 300px 1fr;
+  }
+  .folder-pane {
+    width: 180px;
+  }
+}
+
+@media (max-width: 900px) {
+  .folder-pane {
+    display: none;
+  }
+  .workspace-grid {
+    grid-template-columns: 260px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .outlook-app {
+    flex-direction: column;
+  }
+  .nav-rail {
+    width: 100%;
+    height: 48px;
+    flex-direction: row;
+    padding: 0 8px;
+  }
+  .nav-rail-top {
+    flex-direction: row;
+    flex: 1;
+  }
+  .nav-rail-bottom {
+    flex-direction: row;
+    padding-bottom: 0;
+  }
+  .rail-btn.active::before {
+    top: auto;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    height: 3px;
+    border-radius: 2px 2px 0 0;
+  }
+  .workspace-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 250px 1fr;
+  }
+  .inbox-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border-default);
+  }
+}
+
+@media (max-width: 600px) {
+  .command-bar {
+    padding: 4px 8px;
+    gap: 2px;
+  }
+  .cmd-btn span {
+    display: none;
+  }
+  .account-chip {
+    display: none;
+  }
+
+  .assist-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .assist-input-row {
+    flex-direction: column;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CALENDAR VIEW – Outlook-style calendar
+   ═══════════════════════════════════════════════════════════════ */
+.cal-view {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background: var(--surface-primary);
+}
+
+/* ── Calendar Sidebar ─────────────────────────────────────── */
+.cal-sidebar {
+  width: 260px;
+  border-right: 1px solid var(--border-default);
+  background: var(--surface-secondary);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* Mini Calendar */
+.cal-mini {
+  margin-bottom: 16px;
+}
+
+.cal-mini-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cal-mini-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-nav-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.cal-nav-btn:hover {
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+}
+
+.cal-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.cal-mini-day-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.cal-mini-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: relative;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.cal-mini-day:hover {
+  background: var(--surface-tertiary);
+}
+
+.cal-mini-day.other {
+  color: var(--text-tertiary);
+}
+
+.cal-mini-day.today {
+  background: var(--outlook-blue);
+  color: #fff;
+  font-weight: 700;
+}
+
+.cal-mini-day.today:hover {
+  background: var(--outlook-blue-hover);
+}
+
+.cal-mini-day.selected {
+  outline: 2px solid var(--outlook-blue);
+  outline-offset: -2px;
+}
+
+.cal-mini-day.today.selected {
+  outline-color: var(--outlook-blue-pressed);
+}
+
+.cal-dot {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--outlook-blue);
+}
+
+.cal-mini-day.today .cal-dot {
+  background: #fff;
+}
+
+/* Today Button */
+.cal-today-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-primary);
+  color: var(--outlook-blue);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background 0.1s ease, border-color 0.1s ease;
+  text-align: center;
+}
+
+.cal-today-btn:hover {
+  background: var(--outlook-blue-lighter);
+  border-color: var(--outlook-blue);
+}
+
+/* Upcoming Events */
+.cal-upcoming {
+  flex: 1;
+}
+
+.cal-upcoming-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.cal-upcoming-empty {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 16px 0;
+}
+
+.cal-upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cal-upcoming-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  transition: background 0.1s ease;
+  cursor: default;
+}
+
+.cal-upcoming-item:hover {
+  background: var(--surface-tertiary);
+}
+
+.cal-upcoming-color {
+  width: 3px;
+  min-height: 28px;
+  border-radius: 2px;
+  background: var(--outlook-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cal-upcoming-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-upcoming-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cal-upcoming-time {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* ── Calendar Main (Day View) ─────────────────────────────── */
+.cal-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.cal-main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.cal-main-date {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-main-nav {
+  display: flex;
+  gap: 4px;
+}
+
+/* Day Grid */
+.cal-day-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+/* All-Day Events */
+.cal-all-day {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-secondary);
+}
+
+.cal-all-day-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  width: 60px;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+
+.cal-all-day-events {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.cal-all-day-event {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: var(--outlook-blue);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cal-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cal-event-time {
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.cal-event-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cal-event-link:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Time Slots */
+.cal-time-slots {
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-time-slot {
+  display: flex;
+  align-items: flex-start;
+  min-height: 60px;
+  position: relative;
+}
+
+.cal-time-label {
+  width: 72px;
+  padding: 0 12px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: right;
+  flex-shrink: 0;
+  transform: translateY(-7px);
+  font-weight: 500;
+}
+
+.cal-time-row {
+  flex: 1;
+  border-top: 1px solid var(--border-subtle);
+  min-height: 60px;
+  position: relative;
+  margin-right: 24px;
+  transition: background 0.1s ease;
+}
+
+.cal-time-row:hover {
+  background: var(--surface-secondary);
+}
+
+.cal-slot-events {
+  display: grid;
+  gap: 8px;
+  padding: 8px 12px;
+}
+
+.cal-slot-event {
+  border-left: 3px solid var(--outlook-blue);
+  border-radius: var(--radius-sm);
+  background: var(--outlook-blue-lighter);
+  padding: 8px 10px;
+  box-shadow: var(--shadow-4);
+  max-width: 460px;
+}
+
+.cal-slot-event-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cal-slot-event-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cal-slot-event-time {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cal-slot-event-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 6px;
+  color: var(--outlook-blue);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.cal-slot-event-link.muted {
+  color: var(--text-tertiary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.cal-time-slot.now .cal-time-label {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.cal-now-line {
+  position: absolute;
+  top: 0;
+  left: -6px;
+  right: 0;
+  height: 2px;
+  background: var(--danger);
+  z-index: 2;
+}
+
+.cal-now-line::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+
+/* ── Calendar Responsive ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .cal-sidebar {
+    width: 220px;
+  }
+  .cal-main-date {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cal-view {
+    flex-direction: column;
+  }
+  .cal-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-default);
+    max-height: 300px;
+  }
+  .cal-upcoming {
+    display: none;
+  }
+}
